@@ -11,6 +11,10 @@ A detailed model description is presented in Rastetter and Kwiatkowski, 2020 and
 ### Publications 
 Rastetter EB, and BL Kwiatkowski. 2020. An approach to modeling resource optimization for substitutable and interdependent resources. Ecological Modelling 425: 109033. DOI: /10.1016/j.ecolmodel.2020.109033
 
+Rastetter, E. 2020. Model output, drivers and parameters for Ecosystem Recovery from Disturbance is Constrained by N Cycle Openness, Vegetation-Soil N Distribution, Form of N Losses, and the Balance Between Vegetation and Soil-Microbial Processes ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/0af82d3c3d9d1710775cf9b1464ce70b (Accessed 2020-09-17).
+
+Rastetter, E. and B. Kwiatkowski. 2020. Model executable, output, drivers and parameters for modeling organism acclimation to changing availability of and requirements for substitutable and interdependent resources ver 1. Environmental Data Initiative. https://doi.org/10.6073/pasta/5f4f6fcfe9bf7e63adef00d0c9203327 (Accessed 2020-09-17).
+
 --------------------------------------------------------------------------
 ### Code Instructions 
 

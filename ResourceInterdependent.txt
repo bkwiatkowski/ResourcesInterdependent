@@ -1,0 +1,273 @@
+Model Definition File - 25 character maximum for all text strings
+Model Name= interdependent resource 
+Model Version=	1.0.0
+Model Time Unit= day
+Model Contact= Ed
+Model Contact Address Line 1= Ecosystems
+Model Contact Address Line 2= MBL
+Model Contact Address Line 3= Woods Hole
+
+States
+Name, Units, Symbol, Num array elements if applicable - Comma separated.
+Plant C, g C m-2, BC
+Plant N, g N m-2, BN
+canopy water, mm, Wc
+Avail N, g N m-2, N
+soil water, mm, Ws
+Effort C, effort, VC
+Effort N, effort, VN
+sub effort light, effort, vCI
+sub effort CO2, effort, vCCa
+sub effort H2O, effort, vCW
+Int up C, g C m-2 day-1, UCbar
+Int up N, g N m-2 day-1, UNbar
+Int rec C, g C m-2 day-1, RCbar
+Int rec N, g N m-2 day-1, RNbar
+Cum UC, g C m-2, cumUC
+Cum UN, g N m-2, cumUN
+Cum TR, mm, CumTR
+Cum UW, mm, CumUW
+Cum runoff, g N m-2, cumRO
+Cum resp, g C m-2, CumRC
+Cum C TO, g C m-2, CumTC
+Cum RC&TC, g C m-2, CumRCTC
+Cum N TO, g N m-2, CumTN
+End
+
+Process
+Process Name, Units, Symbol, Num of Parameters, Num array elements if applicable
+Parameters for each process: Name, Units, Symbol
+Light Ps, g C m-2 hr-1, UCI, 4
+	max light Ps, g C m-2 hr-1, rhoI
+	quantun half sat, umol m-2 sec-1, eta
+	beers coef, m2 m-2, kI
+	specific leaf area, m2 g-1 C, lambda
+C Ps, g C m-2 hr-1, UCCa, 2
+	max C Ps, g C m-2 hr-1, rhoC
+	CO2 half sat, ppm, kC
+PImax, g C m-2 hr-1, PImax, 0
+PCmax, g C m-2 hr-1, PCmax, 0
+LT, m2 m-2, LT, 0
+Water Ps, g C m-2 hr, UCw, 2
+	UCw rate const,g C m-2 ppm-1 MPa-1 hr-1, PW
+	leaf wilt pot, MPa, psiw 
+Photosynthesis, g C m-2 hr-1, UC, 1
+	Ps scaler, none, PsS
+N up, g N m-2 hr-1, UN, 2
+	N up rate 1, g N g-1 C hr-1, gN
+	half sat 1, g N m-2, kN
+Water up, mm hr-1, UW, 1
+	water up rate const, mm g-1 C Mpa-1 hr-1, gW
+Respiration, g C m-2 hr-1, RC, 1
+	resp rate const, hr-1, rmC
+C turnover, g C m-2 hr-1, TC, 1
+	C turnover rate const, hr-1, mC
+N turnover, g N m-2 hr-1, TN, 1
+	N turnover rate const, hr-1, mN
+transpiraton, mm hr-1, TR, 2
+	tranpiration rate, mm MPa-2 m-2 hr-1, sigma
+	base VPD, MPa, V0
+N leach, g N m-2 hr-1, LN1, 1
+	loss rate cosnt1, hr-1, tauN
+runoff, mm hr-1, RO, 2
+	RO rate const, hr-1, tauw
+	field cap, mm, Wf
+PHI, none, PHI, 3
+	acclim rate, day-1, a
+	sub acclim rate, day-1, omega
+	int const, day-1, rho
+psiC, g C m-2 day-1, psiC, 0
+psiN, g N m-2 day-1, psiN, 0
+soil potential, MPa, Psis, 1
+	PSIs expon, none, b
+canopy potential, MPa, PsiL,2
+	Can capacitance, L MPa-1 m-2, c
+	not used,none, WC0
+allometry, g C m-2, S, 2
+	alpha, m2 g-1 C, alpha
+	gamma, m2 g-1 C, gamma
+stoichiometry, none, THETA, 1
+	opt C:N, g C g-1 N, qB
+beta, none, beta, 0
+max yield, g C m-2 effort-1 hr-1, ymax, 0
+yeild light, g C m-2 effort-1 hr-1, yCI, 0
+yeild CO2, g C m-2 effort-1 hr-1, yCCa, 0
+yeild H2O, g C m-2 effort-1 hr-1, yCW, 0
+Calibration, none, Calib, 13
+	calibrate, none, calibrate
+	BC target, g C m-2, BCt
+	BN target, g N m-2, BNt
+	VC target, effort, VCt
+	vCi target, effert, vCIt
+	vCCa target, effort, vCCat
+	Ps target, g C m-2 day-1, UCt
+	resp target, g C m-2 day-1, RCt
+	C turnover target, g C m-2 day-1, TCt
+	N up target, g N m-2 day-1, UNt
+	N turnover target, g N m-2 day-1, TNt
+	water up target, mm day-1, UWt
+	transpiration target, mm day-1, TRt
+End
+
+Drive
+Name, Units, Symbol, Num array elements - Comma separated.
+irradiance,umol m-2 sec-1, I
+N input, g N m-2 hr-1, IN1
+CO2, ppm, Ca
+Ppt, mm hr-1, Ppt
+VPD, Mpa, VPD
+Days end, none, EOD
+End
+
+Other Double Variables
+Name, Units, Symbol - Comma separated.
+End
+
+Other Integer Variables
+Name, Units, Symbol - Comma separated.
+End
+
+Functions
+End Functions
+
+Equations – See the Computer Programming handout for instructions on writing equations in Pascal. Semicolons must end each statement.
+Calib:=0;
+
+S:=VC+VN;
+VC:=VC/S;
+VN:=1-VC;
+S:=vCI+vCCa+vCW;
+vCI:=vCI/S;
+vCCa:=vCCa/S;
+vCW:=1-vCI-vCCa;
+
+S:=BC*((alpha*BC+1)/(gamma*BC+1));
+LT:=lambda*S*VC*(vCCa+vCI);
+psiS:=-0.01*power(Ws/Wf,-b);
+PsiL:=psiw+Wc/c/LT;
+THETA:=BC/qB/BN; 
+
+PImax:=PsS*rhoI*vCI/(vCCa+vCI);
+PCmax:=PsS*rhoC*vCCa/(vCCa+vCI);
+UCI:=(PImax/kI)*ln((eta+I)/(eta+I*exp(-kI*LT)));
+UCCa:=LT*PCmax*Ca/(kc+Ca);
+UCw:=LT*PsS*PW*(psiL-Psiw)*Ca;
+if UCw<0 then UCw:=0;
+UC:=min(UCI,min(UCCa,UCw));
+UN:=S*gN*N*VN/(kN+N);
+UW:=S*gw*(psiS-PsiL)*VC*vCW;
+RC:=rmC*THETA*BC;
+TC:=mC*BC;
+TN:=mN*BN/THETA;
+
+
+
+TR:=sigma*UC*VPD/(Ca*(1+VPD/V0));
+
+LN1:=tauN*N;
+if Ws>Wf then RO:=tauW*(Ws-Wf) else RO:=0;
+PHI:=power(UCbar/RCbar,VC)*power(UNbar/RNbar,VN);
+psiC:=((rmC+mC)*BC)/THETA;
+psiN:=mN*THETA*BN;
+if UC=UCI then 
+  begin
+    yCI:=eta+I*exp(-kI*LT);
+    yCI:=(rhoI*vCCa/kI/sqr(vCCa+vCI))*ln((eta+I)/yCI)+S*VC*PImax*I*exp(-kI*LT)/yCI; 
+  end
+else yCI:=0;
+if UC=UCCa then yCCa:=UCCa/vCCa else yCCa:=0;
+
+if UC=UCW then yCW:=Ca*(1+VPD/V0)*S*gw*(psiS-PsiL)*VC/(sigma*VPD) else yCW:=0;
+
+ymax:=max(yCI,max(yCCa,yCW));
+if ymax=0 then
+  begin
+    beta:=0;
+    ymax:=1;
+  end
+else beta:=(yCI*vCI+yCCa*vCCa+yCW*vCW)/ymax;
+
+
+if CalculateDiscrete then
+   begin
+
+ {calibrate}
+      if (calibrate>-100) and (EOD=1) then
+        begin
+          IF CALIBRATE <0 THEN calibrate :=-calibrate*exp(-5e-6*time);
+
+
+          if (VC<VCt) then qB:=qB*(1+calibrate)
+          else             qB:=qB*(1-calibrate);
+
+          if (CumUC<UCt) then PsS:=PsS*(1+calibrate)
+          else                PsS:=PsS*(1-calibrate);
+
+          if (CumUN<UNt) then gN:=gN*(1+0.5*calibrate)
+          else                gN:=gN*(1-0.5*calibrate);
+
+          if vCI<vCIt then rhoI:=rhoI*(1-calibrate)
+          else             rhoI:=rhoI*(1+calibrate);
+
+          if vCCa<vCCat then rhoC:=rhoC*(1-calibrate)
+          else               rhoC:=rhoC*(1+calibrate);
+
+          if vCW<1-vCIt-vCCat then PW:=PW*(1-calibrate)
+          else                     PW:=PW*(1+calibrate);
+
+          if cumUW>UWt then gW:=gW*(1-calibrate)
+          else              gW:=gW*(1+calibrate);
+
+          if cumTR>TRt then sigma:=sigma*(1-calibrate)
+          else              sigma:=sigma*(1+calibrate);
+
+
+          if cumRC>RCt then rmc:=rmc*(1-calibrate)
+          else              rmc:=rmc*(1+calibrate);
+
+          if cumTC>TCt then mc:=mc*(1-calibrate)
+          else              mc:=mc*(1+calibrate);
+
+          if cumTN>TNt then mn:=mn*(1-calibrate)
+          else              mn:=mn*(1+calibrate);
+
+          par[FmCalculate.GetArrayIndex(vtparameter,'PsS')].value:=PsS;  
+          par[FmCalculate.GetArrayIndex(vtparameter,'qB')].value:=qB;
+          par[FmCalculate.GetArrayIndex(vtparameter,'rhoI')].value:=rhoI;
+          par[FmCalculate.GetArrayIndex(vtparameter,'rhoC')].value:=rhoC;
+          par[FmCalculate.GetArrayIndex(vtparameter,'PW')].value:=PW;
+          par[FmCalculate.GetArrayIndex(vtparameter,'gN')].value:=gN;
+          par[FmCalculate.GetArrayIndex(vtparameter,'gW')].value:=gW;
+          par[FmCalculate.GetArrayIndex(vtparameter,'rmC')].value:=rmC;
+          par[FmCalculate.GetArrayIndex(vtparameter,'mC')].value:=mC;
+          par[FmCalculate.GetArrayIndex(vtparameter,'mN')].value:=mN;
+          par[FmCalculate.GetArrayIndex(vtparameter,'sigma')].value:=sigma;
+
+        end;
+   end;
+End Equations
+
+Derivatives – For array variables use jj as the array index. Same order as State var.
+dBCdt := 0.1*(UC-TC-RC);
+dBNdt := 0.1*(UN-TN);
+dWcdt := 0.1*(UW-TR);
+dNdt := 0.1*(IN1-UN-LN1);
+dWsdt := 0.1*(Ppt-UW-RO);
+dVCdt := 0.1*(a*ln(PHI*RCbar/UCbar)*VC);
+dVNdt := 0.1*(a*ln(PHI*RNbar/UNbar)*VN);
+dvCIdt := 0.1*(omega*(yCI/ymax-beta)*vCI);
+dvCCadt := 0.1*(omega*(yCCa/ymax-beta)*vCCa);
+dvCWdt := 0.1*(omega*(yCW/ymax-beta)*vCW);
+dUCbardt := 0.1*(rho*(UC-UCbar));
+dUNbardt := 0.1*(rho*(UN-UNbar));
+dRCbardt := 0.1*(rho*(psiC-RCbar));
+dRNbardt := 0.1*(rho*(psiN-RNbar));
+dcumUCdt := 0.1*(UC);
+dcumUNdt := 0.1*(UN);
+dCumTRdt := 0.1*(TR);
+dCumUWdt := 0.1*(UW);
+dcumROdt := 0.1*(RO);
+dCumRCdt := 0.1*(RC);
+dCumTCdt := 0.1*(TC);
+dCumRCTCdt := 0.1*(RC+TC);
+dCumTNdt := 0.1*(TN);

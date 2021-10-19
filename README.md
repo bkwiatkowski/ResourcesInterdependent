@@ -1,4 +1,4 @@
-# Interdependent Resource Model
+# Interdependent Resources Model
 
 The ResourceInterdependent model couples ecosystem carbon (C), nitrogen (N), and phosphorus (P) and water (W) cycles and generates output for all stocks and fluxes on a daily time step. The differential equations that describe the mass balance for each of the simulated components of the ecosystem are solved numerically using a 4th-5th order Runge-Kutta integrator with a time-step size that adapts with each pass through the integrator to optimize precision and computation time (Press et al. 1986).  The model is coded in Lazarus 2.0.12 (2020) Free Pascal and runs on a PC or Mac computer.
 

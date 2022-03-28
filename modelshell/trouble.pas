@@ -6,8 +6,12 @@ uses
   SysUtils, Classes, Graphics, Controls, Forms, Dialogs, StdCtrls, ExtCtrls;
 
 type
+
+  { TFmTrouble }
+
   TFmTrouble = class(TForm)
     Image1: TImage;
+    Label1: TLabel;
     MoContact: TMemo;
     BtnOK: TButton;
     MmError: TMemo;
